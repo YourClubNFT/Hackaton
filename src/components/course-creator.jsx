@@ -1,5 +1,6 @@
 import React from "react";
 import creatorImage from "../assets/images/joel_jota.png";
+import ModalShowMore from "./modal-show-more";
 
 export default function CourseCreator() {
   return (
@@ -31,7 +32,15 @@ export default function CourseCreator() {
               professional swimmer and a multiple-time national champion. He
               became one of the best swimmers in the world.
             </p>
-            <button className="btn btn-outline border-[#010D7E] text-[#010D7E] hover:bg-[#010D7E] hover:text-white">
+
+            <ModalShowMore />
+
+            <button
+              className="btn btn-outline border-[#010D7E] text-[#010D7E] hover:bg-[#010D7E] hover:text-white"
+              onClick={() =>
+                document.getElementById("about-creator").showModal()
+              }
+            >
               Show more
             </button>
           </div>
