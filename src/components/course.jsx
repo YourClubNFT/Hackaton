@@ -1,17 +1,37 @@
 import React from "react";
 import courseImage from "../assets/images/course_image.png";
-import { createWalletClient, custom } from "viem";
-import { mainnet } from "viem/chains";
+import { getContract } from 'viem';
+import  wagmiAbi  from './abi.json'
+import { parseEther } from "viem";
+import { sepolia } from "viem/chains";
+
+import { account, publicClient, walletClient } from './config'
 
 export default function Course() {
   const handleButtonClick = async () => {
+    const clientChainId = await walletClient.getChainId();
+    console.log(clientChainId);
     try {
-      const client = createWalletClient({
-        chain: mainnet,
-        transport: custom(window.ethereum),
+      if (clientChainId !== sepolia.id) {
+        await walletClient.switchChain({ id: sepolia.id })
+      }
+      console.log(account);
+      const contract = getContract({
+        address: '0xC36fB1e63d5EA37844B0DC688bd88FD8d16110B7',
+        abi: wagmiAbi,
+        client: walletClient,
       });
-      const [address] = await client.requestAddresses();
-      console.log(address);
+      const result = await contract.read.name();
+      console.log(result);
+      const { request } = await publicClient.simulateContract({
+        account,
+        address: '0xC36fB1e63d5EA37844B0DC688bd88FD8d16110B7',
+        abi: wagmiAbi,
+        functionName: 'mint',
+        value: 10000,
+      })
+      console.log(request)
+      await walletClient.writeContract(request)
     } catch (error) {
       console.error("Error getting address:", error);
     }
