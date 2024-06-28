@@ -1,34 +1,24 @@
 import React from "react";
 import courseImage from "../assets/images/course_image.png";
 import { getContract } from 'viem';
-import  wagmiAbi  from './abi.json'
-import { parseEther } from "viem";
-import { sepolia } from "viem/chains";
+import  wagmiAbi  from './abi.json';
+import { celoAlfajores } from "viem/chains";
 
 import { account, publicClient, walletClient } from './config'
 
 export default function Course() {
   const handleButtonClick = async () => {
     const clientChainId = await walletClient.getChainId();
-    console.log(clientChainId);
     try {
-      if (clientChainId !== sepolia.id) {
-        await walletClient.switchChain({ id: sepolia.id })
+      if (clientChainId !== celoAlfajores.id) {
+        await walletClient.switchChain({ id: celoAlfajores.id })
       }
-      console.log(account);
-      const contract = getContract({
-        address: '0xC36fB1e63d5EA37844B0DC688bd88FD8d16110B7',
-        abi: wagmiAbi,
-        client: walletClient,
-      });
-      const result = await contract.read.name();
-      console.log(result);
       const { request } = await publicClient.simulateContract({
         account,
-        address: '0xC36fB1e63d5EA37844B0DC688bd88FD8d16110B7',
+        address: '0x5A0f3260012D870a7e7424e17abf93B3D4227C24',
         abi: wagmiAbi,
         functionName: 'mint',
-        value: 10000,
+        value: 10000000000000,
       })
       console.log(request)
       await walletClient.writeContract(request)
