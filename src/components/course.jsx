@@ -26,10 +26,9 @@ export default function Course() {
       console.log("Simulating contract...");
       const { request } = await publicClient.simulateContract({
         account,
-        address: "0xC36fB1e63d5EA37844B0DC688bd88FD8d16110B7",
+        address: "0x66bbc9D1E831A4783C6B5e1B107C4Ce8CA05F7fc",
         abi: wagmiAbi,
         functionName: "mint",
-        value: 10000000000000,
       });
 
       console.log("Request:", request);
