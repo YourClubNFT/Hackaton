@@ -13,7 +13,7 @@ export default function ModalShowMore() {
           trained over 1,000 athletes, ranging from regional level to world
           champions. He served as the general coordinator of{" "}
           <a
-            class="link link-primary"
+            className="link link-primary"
             href="https://institutoneymarjr.org.br/"
             target="_blank"
           >
