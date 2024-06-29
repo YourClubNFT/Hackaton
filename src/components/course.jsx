@@ -26,15 +26,13 @@ export default function Course() {
       console.log("Simulating contract...");
       const { request } = await publicClient.simulateContract({
         account,
-        address: "0x5A0f3260012D870a7e7424e17abf93B3D4227C24",
+        address: "0xC36fB1e63d5EA37844B0DC688bd88FD8d16110B7",
         abi: wagmiAbi,
         functionName: "mint",
         value: 10000000000000,
       });
 
       console.log("Request:", request);
-      alert(JSON.stringify(request));
-
       console.log("Writing contract...");
       await walletClient.writeContract(request);
     } catch (error) {
