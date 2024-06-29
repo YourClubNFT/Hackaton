@@ -1,29 +1,45 @@
 import React from "react";
 import courseImage from "../assets/images/course_image.png";
-import { getContract } from 'viem';
-import  wagmiAbi  from './abi.json';
+import { getContract } from "viem";
+import wagmiAbi from "./abi.json";
 import { celoAlfajores } from "viem/chains";
-
-import { account, publicClient, walletClient } from './config'
+import { account, publicClient, walletClient } from "./config";
 
 export default function Course() {
   const handleButtonClick = async () => {
-    const clientChainId = await walletClient.getChainId();
     try {
-      if (clientChainId !== celoAlfajores.id) {
-        await walletClient.switchChain({ id: celoAlfajores.id })
+      if (!walletClient) {
+        throw new Error("Wallet client is not initialized.");
       }
+      const clientChainId = await walletClient.getChainId();
+      console.log("Client Chain ID:", clientChainId);
+
+      if (clientChainId !== celoAlfajores.id) {
+        await walletClient.switchChain({ id: celoAlfajores.id });
+        alert("Switched to Alfajores");
+      }
+
+      if (!publicClient) {
+        throw new Error("Public client is not initialized.");
+      }
+
+      console.log("Simulating contract...");
       const { request } = await publicClient.simulateContract({
         account,
-        address: '0x5A0f3260012D870a7e7424e17abf93B3D4227C24',
+        address: "0x5A0f3260012D870a7e7424e17abf93B3D4227C24",
         abi: wagmiAbi,
-        functionName: 'mint',
+        functionName: "mint",
         value: 10000000000000,
-      })
-      console.log(request)
-      await walletClient.writeContract(request)
+      });
+
+      console.log("Request:", request);
+      alert(JSON.stringify(request));
+
+      console.log("Writing contract...");
+      await walletClient.writeContract(request);
     } catch (error) {
-      console.error("Error getting address:", error);
+      console.error("Error during contract interaction:", error);
+      alert("Error during contract interaction: " + error.message);
     }
   };
 

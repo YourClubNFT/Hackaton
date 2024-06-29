@@ -11,7 +11,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="footer footer-center bg-[#001D7E] text-primary-content p-10">
+    <footer className="footer footer-center bg-[#001D7E] text-[#a6adbb] p-10">
       <aside>
         <img
           src="src/assets/images/logo_yc_light.png"
