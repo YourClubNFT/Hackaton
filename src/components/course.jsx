@@ -12,7 +12,6 @@ export default function Course() {
         throw new Error("Wallet client is not initialized.");
       }
       const clientChainId = await walletClient.getChainId();
-      console.log("Client Chain ID:", clientChainId);
 
       if (clientChainId !== celoAlfajores.id) {
         await walletClient.switchChain({ id: celoAlfajores.id });
@@ -31,8 +30,6 @@ export default function Course() {
         functionName: "mint",
       });
 
-      console.log("Request:", request);
-      console.log("Writing contract...");
       await walletClient.writeContract(request);
     } catch (error) {
       console.error("Error during contract interaction:", error);
@@ -66,8 +63,11 @@ export default function Course() {
             className="btn btn-outline w-full border-[#010D7E] text-[#010D7E] hover:bg-[#010D7E] hover:text-white"
             onClick={handleButtonClick}
           >
-            Mint
+            Mint (Buy Course)
           </button>
+          <p className="mt-4 text-sm text-gray-500">
+            You need to be in Celo Minipay to mint the course.
+          </p>
         </div>
       </div>
     </section>
