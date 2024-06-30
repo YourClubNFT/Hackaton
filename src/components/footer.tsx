@@ -8,17 +8,13 @@ import {
   WhatsappLogo,
   YoutubeLogo,
 } from "phosphor-react";
+import logoImage from "../assets/images/logo_yc_light.png";
 
 export default function Footer() {
   return (
     <footer className="footer footer-center bg-[#001D7E] text-[#a6adbb] p-10">
       <aside>
-        <img
-          src="src/assets/images/logo_yc_light.png"
-          alt="YourClub logo"
-          width={200}
-          height={200}
-        />
+        <img src={logoImage} alt="YourClub logo" width={200} height={200} />
         <p className="font-bold">YourClub.io</p>
         <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
       </aside>
