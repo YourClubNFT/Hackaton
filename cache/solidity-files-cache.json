@@ -74,8 +74,8 @@
       ]
     },
     "/l/disk0/gperes/dev/celo/contracts/Nft.sol": {
-      "lastModificationDate": 1720805026920,
-      "contentHash": "d8c5b9db11eae9b5f863de00bbb4ed62",
+      "lastModificationDate": 1720806493804,
+      "contentHash": "e8d956dd14e69a3fdeee4d9aec175062",
       "sourceName": "contracts/Nft.sol",
       "solcConfig": {
         "version": "0.8.24",

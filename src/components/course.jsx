@@ -21,7 +21,7 @@ export default function Course() {
   }, []);
 
   const wagmiAbi = contractAbi.abi;
-  const contractAddress = "0xab04e3edaf4DEa1B4BC44A69641905D84E341692";
+  const contractAddress = "0x21737A8498E1855754De4938A7750814152DC1c0";
 
   const checkAccess = async () => {
     setCheckingAccess(true);
