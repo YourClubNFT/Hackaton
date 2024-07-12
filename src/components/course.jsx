@@ -5,6 +5,7 @@ import { celoAlfajores } from "viem/chains";
 import { account, publicClient, walletClient } from "./config";
 import { BallTriangle } from "react-loader-spinner";
 import ModalChangePrice from "./modal-change-price";
+import ModalCourseContent from "./modal-course-content";
 import toast, { Toaster } from "react-hot-toast";
 
 export default function Course() {
@@ -12,12 +13,12 @@ export default function Course() {
   const [isOwner, setIsOwner] = useState(false);
   const [loading, setLoading] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(true);
+  const [showCourseContent, setShowCourseContent] = useState(false);
 
   useEffect(() => {
     checkAccess();
   }, []);
 
-  // Access-Control
   const checkAccess = async () => {
     setCheckingAccess(true);
     try {
@@ -34,6 +35,7 @@ export default function Course() {
       });
 
       setHasAccess(balance > 0);
+      // setHasAccess(true); // testing purposes
 
       const owner = await publicClient.readContract({
         account,
@@ -43,6 +45,7 @@ export default function Course() {
       });
 
       setIsOwner(owner.toLowerCase() === account.toLowerCase());
+      // setIsOwner(true); // testing purposes
     } catch (error) {
       console.error("Error checking access:", error);
     } finally {
@@ -53,6 +56,21 @@ export default function Course() {
   const handleButtonClick = async () => {
     setLoading(true);
     try {
+      if (hasAccess) {
+        toast.success("You already have access to this course.", {
+          duration: 2000,
+          style: {
+            border: "1px solid #010D7E",
+            padding: "16px",
+            color: "#010D7E",
+            background: "#f3f4f6",
+          },
+          position: "top-right",
+          className: "text-sm",
+        });
+
+        return;
+      }
       if (!walletClient) {
         throw new Error("Wallet client is not initialized.");
       }
@@ -87,7 +105,8 @@ export default function Course() {
 
   const handleAccessCourse = () => {
     if (hasAccess) {
-      alert("Access granted. Navigate to the course content.");
+      setShowCourseContent(true);
+      document.getElementById("course-content").showModal();
     } else {
       toast.error("You need to buy this course first.", {
         duration: 2000,
@@ -110,7 +129,7 @@ export default function Course() {
 
   const savePrice = (newPrice) => {
     return new Promise((resolve, reject) => {
-      //TODO: Lógica para salvar o preço no cintrato
+      //TODO: Lógica para salvar o preço no contrato
       setTimeout(() => {
         if (newPrice) {
           resolve("Price saved successfully.");
@@ -217,6 +236,15 @@ export default function Course() {
         </div>
       </div>
       <ModalChangePrice onSave={handleSaveNewPrice} />
+      {showCourseContent && (
+        <ModalCourseContent
+          pdfUrl="URL_DO_SEU_PDF" // Substitua pela URL real do seu PDF
+          onClose={() => {
+            setShowCourseContent(false);
+            document.getElementById("course-content").close();
+          }}
+        />
+      )}
     </section>
   );
 }
