@@ -90,12 +90,18 @@ export default function Course() {
       }
 
       console.log("Simulating contract...");
+      const price = await publicClient.readContract({
+        account,
+        address: contractAddress,
+        abi: wagmiAbi,
+        functionName: "cost",
+      });
       const { request } = await publicClient.simulateContract({
         account,
         address: contractAddress,
         abi: wagmiAbi,
         functionName: "mint",
-        value: 1
+        value: price
       });
 
       await walletClient.writeContract(request);
