@@ -95,7 +95,7 @@ export default function Course() {
         address: contractAddress,
         abi: wagmiAbi,
         functionName: "mint",
-        value: parseEther("1")
+        value: 1
       });
 
       await walletClient.writeContract(request);
