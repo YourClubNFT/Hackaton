@@ -21,6 +21,10 @@ contract TheCompetenciesOfTheFuture is ERC721, Ownable {
         require(msg.value >= cost, "Insufficient funds!");
         _;
     }
+
+    function changePrice(uint256 _price) public onlyOwner {
+        cost = _price;
+    }
  
     function mint() mintPriceCompliance public payable {
         uint256 tokenId = _nextTokenId++;
