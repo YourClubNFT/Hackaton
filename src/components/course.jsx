@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import courseImage from "../assets/images/course_image.png";
-import wagmiAbi from "./abi.json";
+import contractAbi from "../../artifacts/contracts/Nft.sol/TheCompetenciesOfTheFuture.json";
 import { celoAlfajores } from "viem/chains";
 import { account, publicClient, walletClient } from "./config";
 import { BallTriangle } from "react-loader-spinner";
 import ModalChangePrice from "./modal-change-price";
 import ModalCourseContent from "./modal-course-content";
 import toast, { Toaster } from "react-hot-toast";
+import { parseEther } from "viem";
 
 export default function Course() {
   const [hasAccess, setHasAccess] = useState(false);
@@ -19,6 +20,9 @@ export default function Course() {
     checkAccess();
   }, []);
 
+  const wagmiAbi = contractAbi.abi;
+  const contractAddress = "0xab04e3edaf4DEa1B4BC44A69641905D84E341692";
+
   const checkAccess = async () => {
     setCheckingAccess(true);
     try {
@@ -28,7 +32,7 @@ export default function Course() {
 
       const balance = await publicClient.readContract({
         account,
-        address: "0x66bbc9D1E831A4783C6B5e1B107C4Ce8CA05F7fc",
+        address: contractAddress,
         abi: wagmiAbi,
         functionName: "balanceOf",
         args: [account],
@@ -39,7 +43,7 @@ export default function Course() {
 
       const owner = await publicClient.readContract({
         account,
-        address: "0x66bbc9D1E831A4783C6B5e1B107C4Ce8CA05F7fc",
+        address: contractAddress,
         abi: wagmiAbi,
         functionName: "owner",
       });
@@ -88,9 +92,10 @@ export default function Course() {
       console.log("Simulating contract...");
       const { request } = await publicClient.simulateContract({
         account,
-        address: "0x66bbc9D1E831A4783C6B5e1B107C4Ce8CA05F7fc",
+        address: contractAddress,
         abi: wagmiAbi,
         functionName: "mint",
+        value: parseEther("1")
       });
 
       await walletClient.writeContract(request);
