@@ -39,7 +39,6 @@ export default function Course() {
       });
 
       setHasAccess(balance > 0);
-      // setHasAccess(true); // testing purposes
 
       const owner = await publicClient.readContract({
         account,
@@ -49,7 +48,6 @@ export default function Course() {
       });
 
       setIsOwner(owner.toLowerCase() === account.toLowerCase());
-      // setIsOwner(true); // testing purposes
     } catch (error) {
       console.error("Error checking access:", error);
     } finally {
@@ -101,7 +99,7 @@ export default function Course() {
         address: contractAddress,
         abi: wagmiAbi,
         functionName: "mint",
-        value: price
+        value: price,
       });
 
       await walletClient.writeContract(request);
@@ -138,17 +136,34 @@ export default function Course() {
     }
   };
 
-  const savePrice = (newPrice) => {
-    return new Promise((resolve, reject) => {
-      //TODO: Lógica para salvar o preço no contrato
-      setTimeout(() => {
-        if (newPrice) {
-          resolve("Price saved successfully.");
-        } else {
-          reject("Failed to save price.");
-        }
-      }, 2000);
-    });
+  const savePrice = async (newPrice) => {
+    if (!walletClient) {
+      throw new Error("Wallet client is not initialized.");
+    }
+
+    try {
+      const clientChainId = await walletClient.getChainId();
+      if (clientChainId !== celoAlfajores.id) {
+        await walletClient.switchChain({ id: celoAlfajores.id });
+        alert("Switched to Alfajores");
+      }
+
+      const priceInWei = parseEther(newPrice);
+
+      const { request } = await publicClient.simulateContract({
+        account,
+        address: contractAddress,
+        abi: wagmiAbi,
+        functionName: "setPrice",
+        args: [priceInWei],
+      });
+
+      await walletClient.writeContract(request);
+      return "Price saved successfully.";
+    } catch (error) {
+      console.error("Error saving price:", error);
+      throw new Error("Failed to save price.");
+    }
   };
 
   const handleSaveNewPrice = (newPrice) => {

@@ -7,7 +7,7 @@ export default function ModalCourseContent({ pdfUrl, onClose }) {
         <div className="py-4">
           <p>
             This indicates that access to the course has been granted. Here the
-            content or download options wil bne shown, etc.
+            content or download options will be shown, etc.
           </p>
         </div>
         <div className="modal-action flex justify-between">
