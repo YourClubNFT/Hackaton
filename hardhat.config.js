@@ -11,10 +11,17 @@ module.exports = {
               process.env.PRIVATE_KEY,
           ],
       },
+      celo: {
+        url: "https://forno.celo.org",
+        accounts: [
+            process.env.PRIVATE_KEY,
+        ],
+    }
   },
   etherscan: {
       apiKey: {
           alfajores: process.env.ETHERSCAN_API_KEY,
+          celo: process.env.ETHERSCAN_API_KEY,
       },
       customChains: [
           {
